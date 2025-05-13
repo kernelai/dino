@@ -312,7 +312,8 @@ Runner.prototype = {
    * Load and decode base 64 encoded sounds.
    */
   loadSounds: function() {
-    if (!IS_IOS) {
+    try {
+      // 为所有平台创建音频上下文
       this.audioContext = new AudioContext();
 
       var resourceTemplate =
@@ -329,6 +330,9 @@ Runner.prototype = {
             this.soundFx[index] = audioData;
           }.bind(this, sound));
       }
+    } catch(e) {
+      // 处理任何Web Audio API异常
+      console.log('Error initializing sound: ' + e);
     }
   },
 
